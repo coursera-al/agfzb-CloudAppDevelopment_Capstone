@@ -49,7 +49,11 @@ def logout_request(request):
 # Create a `registration_request` view to handle sign up request
 def registration_request(request):
     context = {}
-    if request.method == 'POST':
+    # Redirect to base if logged in
+    if request.user.is_authenticated:
+        return redirect('djangoapp:index')
+    # Do register
+    elif request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         first_name = request.POST['first_name']
