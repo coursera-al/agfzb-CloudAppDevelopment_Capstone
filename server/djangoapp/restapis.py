@@ -1,5 +1,6 @@
 import requests
 import json
+from os import environ
 # import related models here
 from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
@@ -13,7 +14,6 @@ def get_request(url, **kwargs):
     print("GET from {} ".format(url))    
     try:
         # Call get method of requests library with URL and parameters
-        # response = None
         if 'api_key' in kwargs:
             params = dict()
             params["text"] = kwargs["text"]
