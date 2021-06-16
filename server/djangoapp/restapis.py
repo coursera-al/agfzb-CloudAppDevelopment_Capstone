@@ -20,6 +20,7 @@ def get_request(url, **kwargs):
             params["version"] = kwargs["version"]
             params["features"] = kwargs["features"]
             params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+            params["language"] = kwargs["language"]
             response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs, 
         auth=HTTPBasicAuth('apikey', kwargs['api_key']))
         else:
@@ -93,7 +94,7 @@ def get_dealer_reviews_from_cf(url, **kwargs):
 def analyze_review_sentiments(text):
     url = environ['API_URL'] + '/v1/analyze'
     response = get_request(url, text=text, version='2021-03-25', 
-        features='sentiment', return_analyzed_text='true', api_key=environ['API_KEY'])
-    print(response)
+        features='sentiment', return_analyzed_text='true', 
+        language='en', api_key=environ['WATSON_API_KEY'])
     sentiment = response['sentiment']['document']['label']
     return sentiment
