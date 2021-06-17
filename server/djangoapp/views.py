@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, create_new_review
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -77,7 +77,6 @@ def registration_request(request):
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
-    context = {}
     if request.method == "GET":
         url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/dealerships'
         # Get dealers from the URL
@@ -89,7 +88,6 @@ def get_dealerships(request):
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
-    context = {}
     if request.method == 'GET':
         url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/reviews'
         # Get reviews from dealer id
@@ -98,6 +96,14 @@ def get_dealer_details(request, dealer_id):
         return HttpResponse(reviews)
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
-
+def add_review(request, dealer_id):
+    if request.user.is_authenticated and request.method == 'POST':
+        url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/reviews'
+        review = dict()
+        review['time'] = datetime.utcnow().isoformat()
+        review['dealership'] = dealer_id
+        review['review'] = 'This is a great car dealer'
+        json_payload = dict()
+        json_payload['review'] = review
+        review_created = create_new_review(url, json_payload)
+        return HttpResponse(review_created)

@@ -36,7 +36,19 @@ def get_request(url, **kwargs):
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
-
+def post_request(url, json_payload, **kwargs):
+    print(kwargs)
+    print("POST from {}".format(url))
+    try:
+        # Call post
+        response = requests.post(url, params=kwargs, json=json_payload, 
+        headers={'Content-Type': 'application/json'})
+    except:
+        print('Network exception occured')
+    status_code = response.status_code
+    print("With status {} ".format(status_code))
+    json_data = json.loads(response.text)
+    return json_data
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 # - Call get_request() with specified arguments
@@ -86,7 +98,9 @@ def get_dealer_reviews_from_cf(url, **kwargs):
 # def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
-
+def create_new_review(url, review, **kwargs):
+    response = post_request(url, json_payload=review, **kwargs)
+    return response
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 # - Call get_request() with specified arguments
