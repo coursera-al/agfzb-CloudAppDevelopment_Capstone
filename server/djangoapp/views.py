@@ -101,8 +101,10 @@ def add_review(request, dealer_id):
         url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/reviews'
         review = dict()
         review['time'] = datetime.utcnow().isoformat()
+        review['name'] = 'Test'
         review['dealership'] = dealer_id
         review['review'] = 'This is a great car dealer'
+        review['purchase'] = False
         json_payload = dict()
         json_payload['review'] = review
         review_created = create_new_review(url, json_payload)
