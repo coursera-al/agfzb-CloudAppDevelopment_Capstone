@@ -46,8 +46,9 @@
     </nav>
     <!--Add review form here -->
     <div class="container">
+        <h2>Add a review about </h2>
         <form action="{% url 'djangoapp:add_review' dealer_id %}" method="POST">
-            <label for="content">Review:</label>
+            <label for="content">Enter the review comment:</label>
             <textarea class="form-control" id="content" name="content" rows="2" required>
             </textarea>
             <label for="purchasecheck">Purchased:</label>
