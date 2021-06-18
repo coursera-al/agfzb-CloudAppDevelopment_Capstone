@@ -49,25 +49,36 @@
     </nav>
     <!--Add a dealer table here -->
     <div class="table-responsive">
-        <table class="table">
+        <table class="table" data-toggle="table" data-filter-control="true">
             <caption>List of Dealerships</caption>
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Contact</th>
+                    <th data-field="id" scope="col">ID</th>
+                    <th data-field="dealer-name" scope="col">Dealer Name</th>
+                    <th data-field="city" scope="col">City</th>
+                    <th data-field="address" scope="col">Address</th>
+                    <th data-field="zip" scope="col">Zip</th>
+                    <th data-field="state" data-filter-control="select" scope="col">State</th>
                 </tr>
             </thead>
             <tbody>
+                {% for dealer in dealerships %}
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Test Dealership</td>
-                    <td>0 Unknown Rd, Anonymous City</td>
-                    <td>888-999-0000</td>
+                    <td>{{ dealer.dealer_id }}</td>
+                    <td><a href="{% url 'djangoapp:dealer_details' dealer.dealer_id %}">{{dealer.full_name}}</a></td>
+                    <td>{{ dealer.city }}</td>
+                    <td>{{ dealer.address }}</td>
+                    <td>{{ dealer.zip }}</td>
+                    <td>{{ dealer.st }}</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
     </body>
+    <script>
+        $(function() {
+            $('#table').bootstrapTable()
+        });
+</script>
 </html>
