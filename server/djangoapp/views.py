@@ -88,24 +88,31 @@ def get_dealerships(request):
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
+    context = {}
     if request.method == 'GET':
         url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/reviews'
         # Get reviews from dealer id
         reviews = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
+        context['reviews'] = reviews
+        context['dealer_id'] = dealer_id
         # Return a list of reviews
-        return HttpResponse(reviews)
+        return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
-    if request.user.is_authenticated and request.method == 'POST':
-        url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/reviews'
-        review = dict()
-        review['time'] = datetime.utcnow().isoformat()
-        review['name'] = 'Test'
-        review['dealership'] = dealer_id
-        review['review'] = 'This is a great car dealer'
-        review['purchase'] = False
-        json_payload = dict()
-        json_payload['review'] = review
-        review_created = create_new_review(url, json_payload)
-        return HttpResponse(review_created)
+    context = {}
+    if request.user.is_authenticated:
+        context['dealer_id'] = dealer_id
+        if request.method == 'POST':
+            url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/reviews'
+            review = dict()
+            review['time'] = datetime.utcnow().isoformat()
+            review['name'] = 'Test'
+            review['dealership'] = dealer_id
+            review['review'] = 'This is a great car dealer'
+            review['purchase'] = False
+            json_payload = dict()
+            json_payload['review'] = review
+            review_created = create_new_review(url, json_payload)
+            return HttpResponse(review_created)
+        return render(request, 'djangoapp/add_review.html', context)
