@@ -44,18 +44,20 @@
         </div>
     </nav>
     <!-- Add reviews as cards -->
-    <h3>Reviews for</h3>
-    <div class="card-columns">
-        {% for review in reviews %}
-        <div class="card">
-            <img class="card-img-left" width="25" height="25" src="{{ MEDIA_URL }}/emoji/{{ review.sentiment }}.png" />
-            <div class="card-body">
-                <h5 class="card-title">{{ review.car_make }}, {{ review.car_model}}</h5>
-                <p class="card-text">{{ review.car_year }}</p>
-                <p class="card-text">{{ review.review }}</span>
+    <div class="container">
+        <h3>Reviews for <strong>{{ dealer_name }}</strong></h3>
+        <div class="card-columns">
+            {% for review in reviews %}
+            <div class="card">
+                <img class="card-img-left" width="25" height="25" src="{{ MEDIA_URL }}/emoji/{{ review.sentiment }}.png" />
+                <div class="card-body">
+                    <h5 class="card-title">{{ review.car_make }}, {{ review.car_model}}</h5>
+                    <p class="card-text">{{ review.car_year }}</p>
+                    <p class="card-text">{{ review.review }}</span>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
     </body>
 

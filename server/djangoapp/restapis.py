@@ -21,8 +21,7 @@ def get_request(url, **kwargs):
             params["features"] = kwargs["features"]
             params["return_analyzed_text"] = kwargs["return_analyzed_text"]
             params["language"] = kwargs["language"]
-            response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs, 
-        auth=HTTPBasicAuth('apikey', kwargs['api_key']))
+            response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs, auth=HTTPBasicAuth('apikey', kwargs['api_key']))
         else:
             response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs)
     except:
@@ -71,6 +70,7 @@ def get_dealers_from_cf(url, **kwargs):
             results.append(dealer_obj)
     return results
 
+# Example
 def get_dealers_by_state_from_cf(url, state):
     return get_dealers_from_cf(url, state=state)
 

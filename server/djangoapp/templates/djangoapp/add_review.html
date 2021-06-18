@@ -46,13 +46,29 @@
     </nav>
     <!--Add review form here -->
     <div class="container">
-        <h2>Add a review about </h2>
+        <h2>Add a review about <strong>{{ dealer_name }}</strong></h2>
         <form action="{% url 'djangoapp:add_review' dealer_id %}" method="POST">
-            <label for="content">Enter the review comment:</label>
-            <textarea class="form-control" id="content" name="content" rows="2" required>
-            </textarea>
-            <label for="purchasecheck">Purchased:</label>
-            <input type="checkbox" class="form-control form-check-input" id="purchasecheck" name="purchasecheck" />
+            <div class="form-group">
+                <label for="content">
+                    <strong>Enter the review comment:</strong>
+                </label>
+                <textarea class="form-control" id="content" name="content" rows="2" placeholder="This is a great car dealer" required>
+                </textarea>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" class="form-check-input" id="purchasecheck" name="purchasecheck" />
+                <label class="form-check-label" for="purchasecheck"> Has purchased the car from {{ dealer_name }}? </label>
+            </div>
+            <div class="form-inline">
+                <label for="car"><strong>Select your car (model-make-year):</strong></label>
+                <select id="car" name="car" class="form-control ml-2">
+                    <option>Default select</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="purchasedate"><strong>Select Your Purchase Date:</strong></label>
+                <input type="date" id="purchasedate" name="purchasedate" class="form-control"/>
+            </div>
         </form>
     </div>
     </body>

@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
+from .models import CarDealer
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, create_new_review
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -12,7 +13,6 @@ import json
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
-
 
 # Create your views here.
 
@@ -90,11 +90,15 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == 'GET':
+        url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/dealerships'
+        # Get dealer from the URL
+        dealership = get_dealers_from_cf(url, id=dealer_id)[0]
         url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/reviews'
         # Get reviews from dealer id
         reviews = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
         context['reviews'] = reviews
         context['dealer_id'] = dealer_id
+        context['dealer_name'] = dealership.full_name
         # Return a list of reviews
         return render(request, 'djangoapp/dealer_details.html', context)
 
@@ -102,7 +106,11 @@ def get_dealer_details(request, dealer_id):
 def add_review(request, dealer_id):
     context = {}
     if request.user.is_authenticated:
+        url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/dealerships'
+        # Get dealer from the URL
+        dealership = get_dealers_from_cf(url, id=dealer_id)[0]
         context['dealer_id'] = dealer_id
+        context['dealer_name'] = dealership.full_name
         if request.method == 'POST':
             url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/reviews'
             review = dict()
