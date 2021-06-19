@@ -127,12 +127,13 @@ def add_review(request, dealer_id):
             else:
                 review['purchase'] = False
             # Select car chosen
-            car = CarModel.objects.get(id=request.POST['car'])
+            car = CarModel.objects.get(id=int(request.POST['car']))
             review['car_make'] = car.make.name
             review['car_model'] = car.name
-            review['car_year'] = car.year
+            review['car_year'] = car.year.year
             json_payload = dict()
             json_payload['review'] = review
+            print(json_payload)
             review_created = create_new_review(url, json_payload)
             print(review_created)
             return redirect('djangoapp:dealer_details', dealer_id=dealer_id)
