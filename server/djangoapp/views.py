@@ -115,7 +115,9 @@ def add_review(request, dealer_id):
         # New review submission
         if request.method == 'POST':
             url = 'https://cc47b2e6.us-south.apigw.appdomain.cloud/api/reviews'
+            last_review = get_dealer_reviews_from_cf(url, getLastReview=True)[0]
             review = dict()
+            review['id'] = last_review.id
             review['name'] = request.user.username
             review['time'] = datetime.utcnow().isoformat()
             review['dealership'] = dealer_id
